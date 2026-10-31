@@ -5,10 +5,8 @@ from tkinter import filedialog
 import customtkinter as ctk
 import yt_dlp
 
-# Set up UI appearance
 ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue")
-
 
 class VDJDownloaderApp(ctk.CTk):
 
@@ -19,14 +17,12 @@ class VDJDownloaderApp(ctk.CTk):
     self.geometry("750x550")
     self.minsize(650, 450)
 
-    # Default download folder (change this to your actual VirtualDJ music folder if desired)
     self.download_path = os.path.join(
         os.path.expanduser("~"), "Documents", "VirtualDJ", "Music"
     )
     if not os.path.exists(self.download_path):
       os.makedirs(self.download_path, exist_ok=True)
 
-    # --- Top Frame: Search Bar & Path ---
     self.top_frame = ctk.CTkFrame(self, fg_color="transparent")
     self.top_frame.pack(fill="x", padx=20, pady=15)
 
@@ -48,7 +44,6 @@ class VDJDownloaderApp(ctk.CTk):
     )
     self.search_button.pack(side="right")
 
-    # --- Middle Frame: Results Box ---
     self.results_frame = ctk.CTkScrollableFrame(
         self, label_text="Search Results (Double-click or select to download)"
     )
@@ -56,7 +51,6 @@ class VDJDownloaderApp(ctk.CTk):
 
     self.result_buttons = []
 
-    # --- Bottom Frame: Status & Folder Config ---
     self.bottom_frame = ctk.CTkFrame(self, fg_color="transparent")
     self.bottom_frame.pack(fill="x", padx=20, pady=15)
 
@@ -91,7 +85,6 @@ class VDJDownloaderApp(ctk.CTk):
       return
 
     self.search_button.configure(text="Searching...", state="disabled")
-    # Run search in a separate thread to prevent freezing the UI
     threading.Thread(
         target=self.fetch_youtube_results, args=(query,), daemon=True
     ).start()
@@ -140,7 +133,6 @@ class VDJDownloaderApp(ctk.CTk):
         )
 
   def display_results(self, entries):
-    # Clear old buttons
     for btn in self.result_buttons:
       btn.destroy()
     self.result_buttons.clear()
@@ -158,7 +150,6 @@ class VDJDownloaderApp(ctk.CTk):
       duration_str = f"{minutes}:{seconds:02d}" if duration_sec else "N/A"
       url = entry.get("url") or f"https://www.youtube.com/watch?v={entry.get('id')}"
 
-      # Create a frame row for each search result
       row_frame = ctk.CTkFrame(self.results_frame, fg_color="transparent")
       row_frame.pack(fill="x", pady=2)
 
@@ -198,7 +189,6 @@ class VDJDownloaderApp(ctk.CTk):
     ).start()
 
   def download_audio(self, url, title):
-    # Clean file name for filesystem safety
     safe_title = "".join(
         c for c in title if c.isalnum() or c in (" ", "-", "_")
     ).strip()
