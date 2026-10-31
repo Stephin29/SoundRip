@@ -13,7 +13,7 @@ class VDJDownloaderApp(ctk.CTk):
   def __init__(self):
     super().__init__()
     self.search_cache = {}
-    self.title("VirtualDJ yt-dlp Downloader")
+    self.title("SoundRip")
     self.geometry("750x550")
     self.minsize(650, 450)
 
